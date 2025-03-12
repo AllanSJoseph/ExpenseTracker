@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">ExpenseTracker</string>
+
+
+
+    <!--View Expense-->
+    <string name="view_expense_title">Your Expenses</string>
+
+    <string name="exp_id">ID</string>
+    <string name="exp_amount">Amount</string>
+    <string name="exp_date">Date</string>
+    <string name="exp_category">Category</string>
+    <string name="exp_note">Note</string>
+
+    <string name="no_expenses">You have No Expenses</string>
+
+
+    <!--View Income-->
+    <string name="view_income_title">Your Income Sources</string>
+    <string name="inc_id">ID</string>
+    <string name="inc_amount">Amount</string>
+    <string name="inc_source">Source</string>
+    <string name="inc_type">Type</string>
+
+
+    <string name="no_income">You have No Income</string>
+
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="income_types">
+        <item>Cash</item>
+        <item>Online</item>
+        <item>Salary</item>
+        <item>Business</item>
+        <item>Investments</item>
+        <item>Freelance</item>
+    </string-array>
+</resources>

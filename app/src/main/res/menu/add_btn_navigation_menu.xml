@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/add_nav_expense"
+        android:title="Add Expense" />
+
+    <item
+        android:id="@+id/add_nav_income"
+        android:title="Add Income" />
+
+</menu>
