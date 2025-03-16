@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,8 +67,9 @@ public class ViewIncomeFragment extends Fragment {
             do{
                 String id = cur.getString(0);
                 String amount = cur.getString(1);
-                String source = cur.getString(2);
-                String type = cur.getString(3);
+                String date = cur.getString(2);
+                String source = cur.getString(3);
+                String type = cur.getString(4);
 
                 TableRow row = new TableRow(requireContext());
 
@@ -79,9 +81,17 @@ public class ViewIncomeFragment extends Fragment {
                 amountInc.setText(amount);
                 amountInc.setPadding(8,8,8,8);
 
+                TextView dateInc = new TextView(requireContext());
+                dateInc.setText(date);
+                dateInc.setPadding(8,8,8,8);
+
                 TextView sourceInc = new TextView(requireContext());
                 sourceInc.setText(source);
+                sourceInc.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 sourceInc.setPadding(8,8,8,8);
+                sourceInc.setSingleLine(false);
+                sourceInc.setMaxLines(4);
+                //sourceInc.setBreakStrategy(Layout.BREAK_STRATEGY_BALANCED);
 
                 TextView typeInc = new TextView(requireContext());
                 typeInc.setText(type);
@@ -90,6 +100,7 @@ public class ViewIncomeFragment extends Fragment {
 
                 row.addView(idInc);
                 row.addView(amountInc);
+                row.addView(dateInc);
                 row.addView(sourceInc);
                 row.addView(typeInc);
 

@@ -19,6 +19,7 @@
     <string name="view_income_title">Your Income Sources</string>
     <string name="inc_id">ID</string>
     <string name="inc_amount">Amount</string>
+    <string name="inc_date">Date</string>
     <string name="inc_source">Source</string>
     <string name="inc_type">Type</string>
 

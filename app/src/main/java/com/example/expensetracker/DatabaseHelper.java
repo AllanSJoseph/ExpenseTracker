@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("PRAGMA foreign_keys = ON;");
         db.execSQL("CREATE TABLE users (uid INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, phoneno TEXT, password TEXT)");
         db.execSQL("CREATE TABLE expenses (eid INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE NOT NULL, date TEXT, category TEXT, note TEXT, uid INTEGER, FOREIGN KEY(uid) REFERENCES users(uid) ON DELETE CASCADE)");
-        db.execSQL("CREATE TABLE income (iid INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, source TEXT, type TEXT, uid INTEGER, FOREIGN KEY(uid) REFERENCES users(uid) ON DELETE CASCADE)");
+        db.execSQL("CREATE TABLE income (iid INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, date TEXT, source TEXT, type TEXT, uid INTEGER, FOREIGN KEY(uid) REFERENCES users(uid) ON DELETE CASCADE)");
     }
 
     @Override
@@ -91,16 +92,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(squery,null);
     }
 
+    public Cursor getRecentExpenses(String uid){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String squery = "SELECT * FROM expenses WHERE uid = '" + uid + "' ORDER BY eid DESC LIMIT 5";
+        return db.rawQuery(squery,null);
+    }
+
+    public String getExpenseSum(String uid, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor expcursor = db.rawQuery(
+                "SELECT SUM(amount) FROM expenses WHERE uid = ? AND date = ?",
+                new String[]{uid,date}
+        );
+        if(expcursor.moveToFirst()){
+            String sum = expcursor.getString(0);
+            expcursor.close();
+            return sum;
+        }else{
+            return "0";
+        }
+    }
+
+    public HashMap<String,String> getDashFirstSummary(String uid, String date){
+        String expSummary = getExpenseSum(uid,date);
+        String incBalance = getIncomeBalance(uid);
+        HashMap<String,String> summary = new HashMap<>();
+        summary.put("expSummary",expSummary);
+        summary.put("incBalance",incBalance);
+        return summary;
+    }
+
+    public Cursor getCategoryShareToday(String uid, String date){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String squery = "SELECT category, SUM(amount) FROM expenses WHERE uid = '" + uid + "' AND date = '" + date + "' GROUP BY category";
+        return db.rawQuery(squery,null);
+    }
 
 
 
 
     //Income
 
-    public boolean addIncome(String amt, String source, String type, String uid){
+    public boolean addIncome(String amt, String date, String source, String type, String uid){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("amount", amt);
+        values.put("date",date);
         values.put("source", source);
         values.put("type", type);
         values.put("uid", uid);
@@ -112,5 +149,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String squery = "SELECT * FROM income WHERE uid = '" + uid + "'";
         return db.rawQuery(squery,null);
+    }
+
+    public String getIncomeBalance(String uid){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String squery1 = "SELECT SUM(amount) FROM income WHERE uid = ?";
+        String sqyery2 = "SELECT SUM(amount) FROM expenses WHERE uid = ?";
+        Cursor cursor1 = null;
+        Cursor cursor2 = null;
+        double sumIncome = 0.0;
+        double sumExpense = 0.0;
+
+        try {
+            cursor1 = db.rawQuery(squery1, new String[]{uid});
+            cursor2 = db.rawQuery(sqyery2, new String[]{uid});
+
+            if (cursor1.moveToFirst()){
+                sumIncome = cursor1.getDouble(0);
+            }
+            if (cursor2.moveToFirst()){
+                sumExpense = cursor2.getDouble(0);
+            }
+
+        } catch (ConcurrentModificationException e){
+            e.printStackTrace();
+        } finally {
+            cursor1.close();
+            cursor2.close();
+        }
+
+        Log.d("Values", "Income: " + sumIncome + ", Expense: " + sumExpense);
+        double balance = sumIncome - sumExpense;
+        return String.valueOf(balance);
     }
 }

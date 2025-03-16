@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.content.SharedPreferences;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,7 +27,7 @@ public class AddExpenseFragment extends Fragment{
 
     private EditText expDate;
     private EditText expAmt;
-    private EditText expCat;
+    private Spinner expCat;
     private EditText expNote;
 
     private DatabaseHelper dbHelper;
@@ -44,18 +46,27 @@ public class AddExpenseFragment extends Fragment{
 
         expDate = view.findViewById(R.id.add_date);
         expAmt = view.findViewById(R.id.amt_emt);
-        expCat = view.findViewById(R.id.cat);
+        expCat = view.findViewById(R.id.exp_cat_spinner);
         expNote = view.findViewById(R.id.note);
 
         SharedPreferences sharedPref = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         String currentUserid = sharedPref.getString("userid","");
+
+        // Populate Spinner
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(), R.array.expense_categories, android.R.layout.simple_spinner_item
+        );
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        expCat.setAdapter(adapter);
 
         expDate.setOnClickListener(v -> showDatePickerDialog());
 
         view.findViewById(R.id.add_exp_btn).setOnClickListener(v -> {
             String date = expDate.getText().toString();
             String amt = expAmt.getText().toString();
-            String cat = expCat.getText().toString();
+            String cat = expCat.getSelectedItem().toString();
             String note = expNote.getText().toString();
 
             if(date.isEmpty() || amt.isEmpty() || cat.isEmpty() || note.isEmpty()){
@@ -77,7 +88,7 @@ public class AddExpenseFragment extends Fragment{
     private void clearFields(){
         expDate.setText("");
         expAmt.setText("");
-        expCat.setText("");
+        expCat.setSelection(0);
         expNote.setText("");
     }
 

@@ -1,5 +1,6 @@
 package com.example.expensetracker.ui.add;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -18,13 +20,15 @@ import androidx.fragment.app.Fragment;
 import com.example.expensetracker.R;
 import com.example.expensetracker.DatabaseHelper;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 public class AddIncomeFragment extends Fragment {
 
-    private EditText expAmount;
-    private EditText expSource;
-    private Spinner expType;
+    private EditText incDate;
+    private EditText incAmount;
+    private EditText incSource;
+    private Spinner incType;
 
     private DatabaseHelper dbHelper;
 
@@ -42,9 +46,10 @@ public class AddIncomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_add_income, container, false);
 
-        expAmount = view.findViewById(R.id.income_amt_entry);
-        expSource = view.findViewById(R.id.inc_source_entry);
-        expType = view.findViewById(R.id.inc_type_spinner);
+        incDate = view.findViewById(R.id.add_inc_date);
+        incAmount = view.findViewById(R.id.income_amt_entry);
+        incSource = view.findViewById(R.id.inc_source_entry);
+        incType = view.findViewById(R.id.inc_type_spinner);
 
         SharedPreferences sharedPref = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         String currentUserid = sharedPref.getString("userid","");
@@ -54,17 +59,20 @@ public class AddIncomeFragment extends Fragment {
                 requireContext(), R.array.income_types, android.R.layout.simple_spinner_item
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        expType.setAdapter(adapter);
+        incType.setAdapter(adapter);
+
+        incDate.setOnClickListener(v -> showDatePickerDialog());
 
         view.findViewById(R.id.add_inc_btn).setOnClickListener(v -> {
-            String Amount = expAmount.getText().toString();
-            String Source = expSource.getText().toString();
-            String Type = expType.getSelectedItem().toString();
+            String Date = incDate.getText().toString();
+            String Amount = incAmount.getText().toString();
+            String Source = incSource.getText().toString();
+            String Type = incType.getSelectedItem().toString();
 
-            if(Amount.isEmpty() || Source.isEmpty() || Type.isEmpty()){
+            if(Amount.isEmpty() || Source.isEmpty() || Type.isEmpty() || Date.isEmpty()){
                 Toast.makeText(requireContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
             }else{
-                if(dbHelper.addIncome(Amount,Source,Type,currentUserid)) {
+                if(dbHelper.addIncome(Amount,Date,Source,Type,currentUserid)) {
                     Toast.makeText(requireContext(), "Income Added Successfully", Toast.LENGTH_SHORT).show();
                     clearFields();
                 } else {
@@ -78,9 +86,24 @@ public class AddIncomeFragment extends Fragment {
     }
 
     private void clearFields(){
-        expAmount.setText("");
-        expSource.setText("");
-        expType.setSelection(0);
+        incAmount.setText("");
+        incSource.setText("");
+        incType.setSelection(0);
+    }
+
+    private void showDatePickerDialog(){
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                requireContext(), (DatePicker view, int selectedYear, int selectedMonth, int selectedDay) -> {
+                    String selectedDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                    incDate.setText(selectedDate);
+        }, year, month, day);
+
+        datePickerDialog.show();
     }
 
 }
