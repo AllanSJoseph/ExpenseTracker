@@ -128,6 +128,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(squery,null);
     }
 
+    public Cursor getCategoryShare(String uid){
+        SQLiteDatabase db = this.getReadableDatabase();
+//      "String squery" = "SELECT category, SUM(amount) FROM expenses WHERE uid = ? AND date(substr(date,7,4) || '-' || substr(date,4,2) || '-' || substr(date,1,2)) >= date('now','-7 days') GROUP BY category ";
+        String squery = "SELECT category, SUM(amount) FROM expenses WHERE uid = ? GROUP BY category";
+        return db.rawQuery(squery,new String[]{uid});
+    }
+
+    public Cursor getDailyExpenseTrend(String uid){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String squery = "SELECT date, SUM(amount) FROM expenses WHERE uid = ? GROUP BY date ORDER BY date DESC LIMIT 7";
+        return db.rawQuery(squery,new String[]{uid});
+    }
+
 
 
 

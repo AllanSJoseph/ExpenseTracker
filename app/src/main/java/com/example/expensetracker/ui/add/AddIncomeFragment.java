@@ -19,8 +19,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.DatabaseHelper;
+import com.example.expensetracker.ui.formatting.DateFormatter;
 
-import java.util.Calendar;
+
 import java.util.Objects;
 
 public class AddIncomeFragment extends Fragment {
@@ -31,12 +32,14 @@ public class AddIncomeFragment extends Fragment {
     private Spinner incType;
 
     private DatabaseHelper dbHelper;
+    private DateFormatter dateFormatter;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper = new DatabaseHelper(requireContext());
+        dateFormatter = new DateFormatter();
     }
 
 
@@ -92,15 +95,15 @@ public class AddIncomeFragment extends Fragment {
     }
 
     private void showDatePickerDialog(){
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = dateFormatter.getCurrentYear();
+        int month = dateFormatter.getCurrentMonth();
+        int day = dateFormatter.getCurrentDay();
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 requireContext(), (DatePicker view, int selectedYear, int selectedMonth, int selectedDay) -> {
-                    String selectedDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
-                    incDate.setText(selectedDate);
+//                    String digitalMonth = selectedMonth + 1 > 9 ? "/" : "/0";
+//                    String selectedDate = selectedDay + digitalMonth + (selectedMonth + 1) + "/" + selectedYear;
+                    incDate.setText(dateFormatter.formatDate(selectedDay,selectedMonth,selectedYear));
         }, year, month, day);
 
         datePickerDialog.show();

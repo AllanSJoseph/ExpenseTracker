@@ -10,12 +10,12 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.expensetracker.DatabaseHelper;
+import com.example.expensetracker.ui.formatting.DateFormatter;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import java.util.Calendar;
 
 public class DashboardViewModel extends AndroidViewModel {
     //To get the current user
@@ -43,13 +43,8 @@ public class DashboardViewModel extends AndroidViewModel {
         Log.d("DashboardViewModel", "User ID: " + uid.getValue());
         dbHelper = new DatabaseHelper(application.getApplicationContext());
 
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        String currentDate = day + "/" + (month + 1) + "/" + year;
-        date.setValue(currentDate);
+        DateFormatter dateFormatter = new DateFormatter();
+        date.setValue(dateFormatter.getCurrentDate());
     }
 
     public MutableLiveData<String> getUid(){
