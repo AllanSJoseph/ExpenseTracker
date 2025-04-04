@@ -86,6 +86,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean editExpense(String eid, String amt, String date, String cat, String note){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("amount", amt);
+        values.put("date",date);
+        values.put("category", cat);
+        values.put("note",note);
+        long result = db.update("expenses", values, "eid = ?", new String[]{eid});
+        return result != -1;
+    }
+
+    public boolean deleteExpense(String eid){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("expenses", "eid = ?", new String[]{eid});
+        return result != -1;
+    }
+
     public Cursor viewExpenses(String uid){
         SQLiteDatabase db = this.getReadableDatabase();
         String squery = "SELECT * FROM expenses WHERE uid = '" + uid + "'";
@@ -155,6 +172,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("type", type);
         values.put("uid", uid);
         long result = db.insert("income", null, values);
+        return result != -1;
+    }
+
+    public boolean editIncome(String iid, String amt, String date, String source, String type){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("amount", amt);
+        values.put("date",date);
+        values.put("source", source);
+        values.put("type", type);
+        long result = db.update("income", values, "iid = ?", new String[]{iid});
+        return result != -1;
+    }
+
+    public boolean deleteIncome(String iid){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("income", "iid = ?", new String[]{iid});
         return result != -1;
     }
 

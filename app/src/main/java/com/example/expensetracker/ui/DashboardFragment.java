@@ -11,12 +11,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.expensetracker.DatabaseHelper;
 import com.example.expensetracker.R;
 import com.example.expensetracker.ui.dashboard.DashboardViewModel;
 import com.example.expensetracker.ui.dashboard.RecentExpenseAdapter;
@@ -27,14 +28,14 @@ public class DashboardFragment extends Fragment {
     private TextView todayExpenseAmt;
     private TextView incomeBalanceAmt;
     private RecyclerView recentExpList;
+    private CardView addExpenseCard, addIncomeCard;
     private LinearLayout noRecentExpense, yesRecentExpense;
     private RecentExpenseAdapter expenseAdapter;
-    private DatabaseHelper dbHelper;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbHelper = new DatabaseHelper(requireContext());
     }
 
     @Nullable
@@ -53,8 +54,45 @@ public class DashboardFragment extends Fragment {
         todayExpenseAmt = view.findViewById(R.id.most_recent_amt);
         incomeBalanceAmt = view.findViewById(R.id.most_spent_amt);
         recentExpList = view.findViewById(R.id.recent_exp_list);
+        addExpenseCard = view.findViewById(R.id.add_expense_quickAccess);
+        addIncomeCard = view.findViewById(R.id.add_income_quickAccess);
         noRecentExpense = view.findViewById(R.id.no_recent_expense);
         yesRecentExpense = view.findViewById(R.id.yes_recent_expense);
+
+        addExpenseCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddBtnFragment addBtn = new AddBtnFragment();
+
+                // Get FragmentManager from parent activity
+                FragmentTransaction transaction = getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction();
+
+                transaction.replace(R.id.fragment_container, addBtn);
+                transaction.addToBackStack(null);  // Add to back stack
+                transaction.commit();
+            }
+        });
+
+        addIncomeCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddBtnFragment addBtn = new AddBtnFragment();
+
+                Bundle args = new Bundle();
+                args.putInt("PAGE_INDEX", 1);
+                addBtn.setArguments(args);
+
+                FragmentTransaction transaction = getActivity().
+                        getSupportFragmentManager().
+                        beginTransaction();
+
+                transaction.replace(R.id.fragment_container, addBtn);
+                transaction.addToBackStack(null);  // Add to back stack
+                transaction.commit();
+            }
+        });
 
 
         dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);

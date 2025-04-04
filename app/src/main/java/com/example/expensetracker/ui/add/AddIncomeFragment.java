@@ -109,4 +109,8 @@ public class AddIncomeFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    public void doSomething() {
+        Toast.makeText(getContext(), "You are viewing Add Income!", Toast.LENGTH_SHORT).show();
+    }
+
 }

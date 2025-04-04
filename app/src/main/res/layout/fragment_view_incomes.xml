@@ -64,78 +64,16 @@
             android:layout_height="match_parent"
             android:visibility="visible">
 
-            <TableLayout
-                android:id="@+id/incomes_table"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/inc_book_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:background="@color/white"
-                android:stretchColumns="5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.419">
+                android:layout_height="wrap_content">
 
-                <!--Table Heading -->
-
-                <TableRow
-                    android:background="@color/purple_200">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="@string/inc_id"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:gravity="center_horizontal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:padding="8dp"
-                        android:text="@string/inc_amount"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="77dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:padding="8dp"
-                        android:text="@string/inc_date"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="127dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:padding="8dp"
-                        android:text="@string/inc_source"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="94dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:padding="8dp"
-                        android:text="@string/inc_type"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                </TableRow>
+            </androidx.recyclerview.widget.RecyclerView>
 
 
-                <!-- Table Content -->
-                <!-- Content Added Dynamically-->
 
-
-            </TableLayout>
         </LinearLayout>
     </LinearLayout>
 

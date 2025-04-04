@@ -34,6 +34,9 @@ public class AddBtnFragment extends Fragment {
         TabAdapter_Add adapter = new TabAdapter_Add(this);
         viewPager.setAdapter(adapter);
 
+        int pageIndex = getArguments() != null ? getArguments().getInt("PAGE_INDEX", 0) : 0;
+        viewPager.setCurrentItem(pageIndex, false);
+
         // Connect TabLayout with ViewPager2
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
