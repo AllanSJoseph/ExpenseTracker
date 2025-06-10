@@ -66,6 +66,7 @@ public class ExpenseBookAdapter extends RecyclerView.Adapter<ExpenseBookAdapter.
             holder.expNote.setText(note);
 
             holder.editBtn.setOnClickListener(v -> {
+                Toast.makeText(context, "Opening Editing Wizard", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, EditActivity.class);
                 intent.putExtra("id", eid);
                 intent.putExtra("type",0);

@@ -55,8 +55,8 @@ public class IncomeBookAdapter extends RecyclerView.Adapter<IncomeBookAdapter.In
                     String id = cursor.getString(0);
                     String amount = cursor.getString(1);
                     String date = cursor.getString(2);
-                    String type = cursor.getString(3);
-                    String source = cursor.getString(4);
+                    String source = cursor.getString(3);
+                    String type = cursor.getString(4);
 
                     // Set data for Income
                     holder.incAmount.setText("₹ " + amount);
@@ -65,7 +65,7 @@ public class IncomeBookAdapter extends RecyclerView.Adapter<IncomeBookAdapter.In
                     holder.incSource.setText(source);
 
                     holder.editBtn.setOnClickListener(v -> {
-                        Toast.makeText(context, "Edit Btn Clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Opening Editing Wizard", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, EditActivity.class);
                         intent.putExtra("id",id);
                         intent.putExtra("type",1);

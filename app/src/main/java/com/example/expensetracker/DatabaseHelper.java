@@ -105,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor viewExpenses(String uid){
         SQLiteDatabase db = this.getReadableDatabase();
-        String squery = "SELECT * FROM expenses WHERE uid = '" + uid + "'";
+        String squery = "SELECT * FROM expenses WHERE uid = '" + uid + "' ORDER BY eid DESC";
         return db.rawQuery(squery,null);
     }
 
@@ -124,6 +124,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(expcursor.moveToFirst()){
             String sum = expcursor.getString(0);
             expcursor.close();
+            if (sum == null){
+                return "0";
+            }
             return sum;
         }else{
             return "0";
@@ -194,7 +197,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor viewIncomes(String uid){
         SQLiteDatabase db = this.getReadableDatabase();
-        String squery = "SELECT * FROM income WHERE uid = '" + uid + "'";
+        String squery = "SELECT * FROM income WHERE uid = '" + uid + "' ORDER BY iid DESC";
         return db.rawQuery(squery,null);
     }
 

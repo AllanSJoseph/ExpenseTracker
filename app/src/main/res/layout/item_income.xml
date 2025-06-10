@@ -26,7 +26,7 @@
             android:layout_weight="0.9">
 
             <TextView
-                android:id="@+id/inc_type"
+                android:id="@+id/inc_source"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Salary"
@@ -43,7 +43,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/inc_source"
+                android:id="@+id/inc_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Company Salary"

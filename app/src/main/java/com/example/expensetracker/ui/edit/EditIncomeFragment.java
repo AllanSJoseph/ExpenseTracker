@@ -99,6 +99,7 @@ public class EditIncomeFragment extends Fragment {
         });
 
         cancelBtn.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_SHORT).show();
             requireActivity().finish();
         });
 
