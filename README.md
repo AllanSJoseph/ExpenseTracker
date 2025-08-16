@@ -78,6 +78,14 @@ Android's built in XML layout is used for UI part of the app. Various elements l
 
 ## How to run this app.
 
-As of now the app isn't published, but APK will be added later. The project is completed and most of the known bugs are fixed.
+#### Download Compiled Project (apk)
+Check the releases section of this repository to get steps to try out the pre-compiled application.
 
-For now to try it out, you can clone this repo on Android Studio and run. Make sure the app is tested on Android API 35. The app is expected to run well on Android 13.
+#### On Android Studio
+Clone this repository on Android Studio and run. Make sure you are using Android API 35. The app is expected to run well on Android 13.
+
+## App Authors (Collaborators)
+- [Allan S Joseph](https://github.com/AllanSJoseph)
+- [Rajnish Kumar](https://github.com/Rajnishtheone)
+- [Midhun MS](https://github.com/Midhun-M-S5694)
+- [Aswin E](https://github.com/Aswin-adwik)
